@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ELECTION FEED</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.min.js"></script>
+</head>
+<body>
+  <canvas id="myChart" width=300 height=300></canvas>
+
+  <script>
+  $(document).ready(function(){
+    $.get("http://eleksyondata.gmanews.tv/national/PRESIDENT_PHILIPPINES.json.gz", function(data, status){
+    var candidates = [];
+    var resultCount = [];
+    
+    $.each(data.result[0].candidates, function(item, data){
+      candidates.push(data.name);
+    });
+
+    $.each(data.result[0].candidates, function(item, data){
+      resultCount.push(data.vote_count);
+    });
+
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: candidates,
+            datasets: [{
+                label: 'Results as of '+ data.result_as_of ,
+                data: resultCount,
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(75,192,192,0.4)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+            }]
+        }
+    });      
+    });
+  });
+  </script>
+</body>
+</html>
